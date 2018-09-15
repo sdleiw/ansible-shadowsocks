@@ -1,7 +1,8 @@
 ---
 - name: Install Shadowsocks dependencies
   apt: pkg={{ item }}
-  with_items: shadowsocks_dependencies
+  with_items:
+    - "{{ shadowsocks_dependencies }}"
 
 - name: Add the Shadowsocks user
   user: name=shadowsocks
@@ -39,25 +40,13 @@
   command: update-rc.d shadowsocks defaults
            creates=/etc/rc0.d/K01shadowsocks
 
-- name: Generate the Shadowsocks QR code
-  # The ss:// URI format is documented here:
-  #   http://shadowsocks.org/en/config/quick-guide.html
-  shell: echo -n '{{ shadowsocks_encryption_method }}:{{ shadowsocks_password.stdout }}@{{ ansible_default_ipv4.address }}:{{ shadowsocks_server_port }}' | base64 --wrap=0 | sed 's/^/ss:\/\//' | qrencode -s 15 -o {{ shadowsocks_qr_code }}
-         creates={{ shadowsocks_qr_code }}
-
-- name: Set permissions on the QR code image and Shadowsocks password file
+- name: Set permissions on the Shadowsocks password file
   file: path={{ item }}
         owner=shadowsocks
         group=shadowsocks
         mode=640
   with_items:
     - "{{ shadowsocks_password_file }}"
-    - "{{ shadowsocks_qr_code }}"
-
-- name: Fetch the QR code image
-  fetch: dest=/tmp/
-         src={{ shadowsocks_qr_code }}
-         flat=yes
 
 - name: Pause for explanation
-  pause: prompt="Your randomly chosen Shadowsocks password is '{{ shadowsocks_password.stdout }}'. A custom QR code that can be used to automatically configure your Shadowsocks clients has been downloaded to /tmp/shadowsocks-qr-code.png. Simply scan this image to get up and running quickly. Look for the option when creating a new profile in the iOS and Android applications. Press any key to continue..."
+  pause: prompt="Your randomly chosen Shadowsocks password is '{{ shadowsocks_password.stdout }}'. Press any key to continue..."

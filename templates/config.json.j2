@@ -3,9 +3,9 @@
     "local_address": "{{ shadowsocks_local_address }}",
     "local_port":{{ shadowsocks_local_port }},
     "port_password": {
-        {% for port in range(8381,8389) %}
-        {{ port }}:  "{{ shadowsocks_password.stdout }}" {% if not loop.last %},{% endif %}
-        {% endfor %}
+    {% for port in range(8381,8389) %}
+    {{ port }}: "{{ shadowsocks_password.stdout }}"{% if not loop.last %},{% endif %} {{''}}
+    {% endfor %}
     },
     "timeout":{{ shadowsocks_timeout }},
     "method":"{{ shadowsocks_encryption_method }}"
