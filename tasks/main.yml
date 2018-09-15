@@ -19,7 +19,9 @@
   register: shadowsocks_password
 
 - name: Install Shadowsocks
-  pip: name=shadowsocks
+  pip:
+    name: git+https://github.com/shadowsocks/shadowsocks.git@master
+    extra_args: -U
 
 - name: Generate Shadowsocks config file
   template: src=config.json.j2
