@@ -4,7 +4,7 @@
     "local_port":{{ shadowsocks_local_port }},
     "port_password": {
     {% for port in range(8381,8389) %}
-    {{ port }}: "{{ shadowsocks_password.stdout }}"{% if not loop.last %},{% endif %} {{''}}
+    "{{ port }}": "{{ shadowsocks_password.stdout }}"{% if not loop.last %},{% endif %} {{''}}
     {% endfor %}
     },
     "timeout":{{ shadowsocks_timeout }},
