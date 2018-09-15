@@ -1,9 +1,9 @@
 ---
 galaxy_info:
-  author: "Joshua Lund"
-  description: "Ansible role that installs the Shadowsocks secure SOCKS 5 proxy (http://shadowsocks.org)"
+  author: "Lei"
+  description: "extends ansible shadowsocks role from https://github.com/jlund/ansible-shadowsocks"
   license: MIT
-  min_ansible_version: 1.3
+  min_ansible_version: 1.0
   platforms:
     - name: Ubuntu
       versions:

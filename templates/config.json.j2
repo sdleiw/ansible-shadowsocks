@@ -1,8 +1,12 @@
 {
     "server":"{{ ansible_default_ipv4.address }}",
-    "server_port":{{ shadowsocks_server_port }},
+    "local_address": "{{ shadowsocks_local_address }}",
     "local_port":{{ shadowsocks_local_port }},
-    "password":"{{ shadowsocks_password.stdout }}",
+    "port_password": {
+        {% for port in range(8381,8389) %}
+        {{ port }}:  "{{ shadowsocks_password.stdout }}" {% if not loop.last %},{% endif %}
+        {% endfor %}
+    },
     "timeout":{{ shadowsocks_timeout }},
     "method":"{{ shadowsocks_encryption_method }}"
 }
